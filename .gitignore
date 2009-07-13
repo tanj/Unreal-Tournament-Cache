@@ -1,0 +1,14 @@
+# ignore files
+
+# editor generated
+*~
+#*
+*#
+
+# gcc generated
+*.o
+*.a
+
+# tags
+TAGS
+
