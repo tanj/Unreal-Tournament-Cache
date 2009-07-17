@@ -35,6 +35,13 @@ int cache_action(struct cache *file)
 
 int main(int argc, char **argv)
 {
-/*TODO*/
-	return 0;
+	if( argc > 1 ) {
+		usage("ut-cache \n\
+			\n\
+			Unreal Tournament cache reader.\n\
+			Convert the *.uxx files into their real names move into configured\n\
+			directories.");
+	}
+
+	return 0; 
 }
