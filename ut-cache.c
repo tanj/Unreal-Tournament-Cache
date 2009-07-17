@@ -9,7 +9,7 @@ void usage(const char *err)
 	exit(1);
 }
 
-static int error(const char *string)
+int error(const char *string)
 {
 	fprintf(stderr, "error: %s\n", string);
 	return -1;
@@ -36,11 +36,10 @@ int cache_action(struct cache *file)
 int main(int argc, char **argv)
 {
 	if( argc > 1 ) {
-		usage("ut-cache \n\
-			\n\
-			Unreal Tournament cache reader.\n\
-			Convert the *.uxx files into their real names move into configured\n\
-			directories.");
+		usage("ut-cache \n\n"
+		      "Unreal Tournament cache reader.\n"
+		      "Convert the *.uxx files into their real names move into configured\n"
+		      "directories.");
 	}
 
 	return 0; 
