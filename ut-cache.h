@@ -20,12 +20,19 @@
 #define UT_MOVE 1
 #define UT_DELETE -1
 
+/* Default buffers and things */
+#define MAXLINES 1000
+
+/* Default strings */
+#define CACHE_FILE "test/ut99_cache.ini"
+
 /*
  * Basic struct for parsing the cache.ini into
  */
-struct cache {
+struct ut_cache {
 	char cfile[100]; /* cache file name */
 	char gfile[100]; /* game file name */
+	char gdir[20];   /* game directory */
 	int action;      /* actions to take on the file */
 };
 
@@ -33,11 +40,11 @@ struct cache {
  * cache handling functions
 */
 /* read cache and figure out where each file should go */
-int read_cache(unsigned char *cachefile, struct cache *file);
+int read_cache(const char *cachefile, struct ut_cache **cache);
 /* figure out where each file should go */
-int asign_dir(struct cache *file);
+int asign_dir(struct ut_cache *file);
 /* perform action */
-int cache_action(struct cache *file);
+int cache_action(struct ut_cache *file);
 
 /* General helper functions */
 extern void usage(const char *err);

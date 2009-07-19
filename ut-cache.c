@@ -15,19 +15,45 @@ int error(const char *string)
 	return -1;
 }
 
-int asign_dir(struct cache *file)
+int asign_dir(struct ut_cache *file)
 {
 /*TODO*/
 	return 0;
 }
 
-int read_cache(unsigned char *cachefile, struct cache *file)
+int read_cache(const char *cachefile, struct ut_cache **cache)
 {
-/*TODO*/
+	int fd = open( *cachefile, O_RDONLY );
+	int ret = 0;
+	char line[MAXLEN];
+
+	int buf_size = 100;
+	int i = 0;
+
+	cache = malloc(buf_size*sizeof(struct ut_cache *));
+	for(i = 0; i < buf_size; i++;) 
+		cache[i] = malloc(sizeof(struct ut_cache));
+
+	if(fd == -1){
+		switch(errno){
+		case ENOENT:
+			return error("file: \"" cachefile "\" was not found.\n");
+			break;
+		case EACCES:
+			return error("unable to open \"" cachefile "\" for reading. Check permissions.\n");
+			break;
+		default:
+			return error("unknown error occurred trying to open \"" cachefile "\"\n");
+		}
+	}
+	
+	close(fd);
+	printf("done!\n");
+	
 	return 0;
 }
 
-int cache_action(struct cache *file)
+int cache_action(struct ut_cache *file)
 {
 /*TODO*/
 	return 0;
@@ -41,6 +67,10 @@ int main(int argc, char **argv)
 		      "Convert the *.uxx files into their real names move into configured\n"
 		      "directories.");
 	}
+
+	struct ut_cache **c;
+
+	read_cache(CACHE_FILE, c);
 
 	return 0; 
 }
