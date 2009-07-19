@@ -85,6 +85,7 @@ void *read_cache(const char *cachefile, int *size)
 					*size = error( "out of memory\n" );
 					goto out_free;
 				}
+				memset(cache[i], 0, sizeof(struct ut_cache));
 			}
 	}else
 		error("got non NULL cache pointer\n");
