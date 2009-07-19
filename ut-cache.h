@@ -50,5 +50,6 @@ int cache_action(struct ut_cache *file);
 /* General helper functions */
 extern void usage(const char *err);
 extern int error(const char *string);
+extern void chomp(char *line);
 
 #endif /* UT_CACHE_H */

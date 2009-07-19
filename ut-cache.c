@@ -15,6 +15,16 @@ int error(const char *string)
 	return -1;
 }
 
+void chomp(char *line)
+{
+	char c;
+	int i;
+	for(i=0;(c=line[i]) != '\0'; i++) {
+		if( '\r' == c || '\n' == c )
+			line[i] = '\0';
+	}
+}
+
 int asign_dir(struct ut_cache *file)
 {
 /*TODO*/
@@ -85,6 +95,7 @@ void *read_cache(const char *cachefile, int *size)
 			i--;
 			continue;
 		}
+		chomp(line);
 		memcpy( cache[i]->cfile, line, (sizeof(char) * ( equals - line )));
 		memcpy( cache[i]->gfile, (equals+1), sizeof((cache[i]->gfile)));
 	}
