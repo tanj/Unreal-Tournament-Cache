@@ -23,7 +23,8 @@ int asign_dir(struct ut_cache *file)
 
 int read_cache(const char *cachefile, struct ut_cache **cache)
 {
-	int fd = open( *cachefile, O_RDONLY );
+	int fd = open( cachefile, O_RDONLY );
+	int fd_err = errno;
 	int ret = 0;
 	char line[MAXLEN];
 
@@ -36,7 +37,7 @@ int read_cache(const char *cachefile, struct ut_cache **cache)
 			cache[i] = malloc(sizeof(struct ut_cache));
 	}
 	if(fd == -1){
-		switch(errno){
+		switch(fd_err){
 		case ENOENT:
 			return error("cache file was not found.\n");
 			break;
@@ -44,7 +45,7 @@ int read_cache(const char *cachefile, struct ut_cache **cache)
 			return error("unable to open cache file for reading. Check permissions.\n");
 			break;
 		default:
-			fprintf(stderr, "error: %d\n", errno);
+			fprintf(stderr, "error: %d\n", fd_err);
 			return error("unknown error occurred trying to open cache file\n");
 		}
 	}
