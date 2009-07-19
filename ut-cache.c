@@ -30,20 +30,21 @@ int read_cache(const char *cachefile, struct ut_cache **cache)
 	int buf_size = 100;
 	int i = 0;
 
-	cache = malloc(buf_size*sizeof(struct ut_cache *));
-	for(i = 0; i < buf_size; i++;) 
-		cache[i] = malloc(sizeof(struct ut_cache));
-
+	if( cache == NULL ) {
+		cache = malloc(buf_size*sizeof(struct ut_cache *));
+		for(i = 0; i < buf_size; i++) 
+			cache[i] = malloc(sizeof(struct ut_cache));
+	}
 	if(fd == -1){
 		switch(errno){
 		case ENOENT:
-			return error("file: \"" cachefile "\" was not found.\n");
+			return error("cache file was not found.\n");
 			break;
 		case EACCES:
-			return error("unable to open \"" cachefile "\" for reading. Check permissions.\n");
+			return error("unable to open cache file for reading. Check permissions.\n");
 			break;
 		default:
-			return error("unknown error occurred trying to open \"" cachefile "\"\n");
+			return error("unknown error occurred trying to open cache file\n");
 		}
 	}
 	
@@ -68,7 +69,7 @@ int main(int argc, char **argv)
 		      "directories.");
 	}
 
-	struct ut_cache **c;
+	struct ut_cache **c = NULL;
 
 	read_cache(CACHE_FILE, c);
 
