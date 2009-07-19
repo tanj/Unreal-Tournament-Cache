@@ -109,6 +109,7 @@ out_free:
 
 	if( *size < 0 ){
 		free(cache);
+		cache = NULL;
 		ret = -1;
 	}
 
