@@ -21,7 +21,7 @@
 #define UT_DELETE -1
 
 /* Default buffers and things */
-#define MAXLINES 1000
+#define MAXLEN 1000
 
 /* Default strings */
 #define CACHE_FILE "test/ut99_cache.ini"
