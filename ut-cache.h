@@ -31,7 +31,7 @@
  * Basic struct for parsing the cache.ini into
  */
 struct ut_cache {
-	char cfile[100]; /* cache file name */
+	char cfile[40];  /* cache file name */
 	char gfile[100]; /* game file name */
 	char gdir[20];   /* game directory */
 	int action;      /* actions to take on the file */
@@ -41,7 +41,7 @@ struct ut_cache {
  * cache handling functions
 */
 /* read cache and figure out where each file should go */
-int read_cache(const char *cachefile, struct ut_cache **cache);
+void *read_cache(const char *cachefile, int *size);
 /* figure out where each file should go */
 int asign_dir(struct ut_cache *file);
 /* perform action */
