@@ -82,7 +82,7 @@ void *read_cache(const char *cachefile, int *size)
 			for(i = 0; i < buf_size; i++) {
 				cache[i] = malloc(sizeof(struct ut_cache));
 				if(cache[i] == NULL) {
-					ret = error( "out of memory\n" );
+					*size = error( "out of memory\n" );
 					goto out_free;
 				}
 			}
@@ -106,6 +106,11 @@ out_free:
 		fclose(fp);
 	else
 		close(fd);
+
+	if( *size < 0 ){
+		free(cache);
+		ret = -1;
+	}
 
 	return (ret == -1)? NULL: cache;
 }
