@@ -44,6 +44,7 @@ int read_cache(const char *cachefile, struct ut_cache **cache)
 			return error("unable to open cache file for reading. Check permissions.\n");
 			break;
 		default:
+			fprintf(stderr, "error: %d\n", errno);
 			return error("unknown error occurred trying to open cache file\n");
 		}
 	}
