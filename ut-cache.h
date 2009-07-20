@@ -10,6 +10,9 @@
 #include <stdarg.h>
 #include <string.h>
 #include <errno.h>
+#include <ctype.h>
+
+#include "ut-data.h"
 
 /* Unreal Tournament versions */
 #define UT99 1
@@ -51,5 +54,6 @@ int cache_action(struct ut_cache *file);
 extern void usage(const char *err);
 extern int error(const char *string);
 extern void chomp(char *line);
+extern void stolower(char *string);
 
 #endif /* UT_CACHE_H */

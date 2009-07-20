@@ -25,9 +25,38 @@ void chomp(char *line)
 	}
 }
 
+void stolower(char *string)
+{
+	int i;
+	int len = strlen(string);
+
+	for(i=0; i<len; i++)
+		string[i] = tolower(string[i]);
+}
+
 int asign_dir(struct ut_cache *file)
 {
-/*TODO*/
+	char ext[5]; /* allow for 4 char extentions */
+	memset(ext, 0, sizeof(ext));
+	char *pdot=NULL;
+
+	if( (pdot=strrchr(file->gfile, '.')) != NULL)
+		memcpy(ext, (pdot+1), sizeof(char)*3);
+
+	stolower(ext);
+
+	if( !strcmp(ext, UT_U )){
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	}else if( !strcmp(ext, UT_UAX) ){
+		memcpy(file->gdir, SOUND, sizeof(SOUND));
+	}else if( !strcmp(ext, UT_UMX) ){
+		memcpy(file->gdir, MUSIC, sizeof(MUSIC));
+	}else if( !strcmp(ext, UT_UNR) ){
+		memcpy(file->gdir, MAPS, sizeof(MAPS));
+	}else if( !strcmp(ext, UT_UTX) ){
+		memcpy(file->gdir, TEXTURES, sizeof(TEXTURES));
+	}
+
 	return 0;
 }
 
@@ -99,6 +128,7 @@ void *read_cache(const char *cachefile, int *size)
 		chomp(line);
 		memcpy( cache[i]->cfile, line, (sizeof(char) * ( equals - line )));
 		memcpy( cache[i]->gfile, (equals+1), sizeof((cache[i]->gfile)));
+		asign_dir(cache[i]);
 	}
 	*size = i;
 
@@ -142,6 +172,7 @@ int main(int argc, char **argv)
 		for(i=0; i<num_cache; i++) {
 			fprintf(stderr, "cfile: %s\n", c[i]->cfile);
 			fprintf(stderr, "gfile: %s\n", c[i]->gfile);
+			fprintf(stderr, "gdir:  %s\n", c[i]->gdir);
 			fprintf(stderr, "\n");
 		}
 	}
