@@ -147,29 +147,62 @@ out_free:
 	return (ret == -1)? NULL: cache;
 }
 
+int write_cache( FILE *fp, struct ut_cache *file )
+{
+	if(!ftell(fp))
+		fprintf( fp, "[Cache]\r\n" );
+
+	fprintf( fp, "%s=%s\r\n", (file->cfile), (file->gfile));
+
+	return 0;
+}
+
+	
 int cache_action(struct ut_cache **file, int num_entries)
 {
 /*TODO: perform action and write new cache.ini */
+	FILE *fp = fopen( "test/cache.ini.new", "w" );
+	char cmd[1024]; //TODO: Get this information from system in ./configure
 	int i=0;
+
 	for(i=0;i<num_entries;i++) {
 		switch(file[i]->action) {
 		case UT_MOVE:
 			//TODO: mv "file->cfile" "/GAME_PATH/file->gdir/file->gfile"
+			sprintf( cmd, "mv \"%s/%s.uxx\" \"%s/%s/%s\"", 
+				 cache_dir, (file[i]->cfile),move_dir,(file[i]->gdir), (file[i]->gfile));
+			if(system(cmd)) {
+				//TODO: do something intelligent
+				error("mv system call failed\n");
+				write_cache( fp, file[i] );
+				file[i]->action = UT_NO_TASK;
+			}else {
+				memset( file[i], 0, sizeof(struct ut_cache));
+			}
 			break;
 		case UT_DELETE:
 			//TODO: rm -f "file->cfile"
+			sprintf( cmd, "rm -f \"%s/%s.uxx\"", cache_dir, (file[i]->cfile));
+			if(system(cmd)) {
+				//TODO: do something intelligent
+				error("rm system call failed\n");
+				write_cache( fp, file[i] );
+				file[i]->action = UT_NO_TASK;
+			}else {
+				memset( file[i], 0, sizeof(struct ut_cache));
+			}
 			break;
 		case UT_NO_TASK:
 		default:
-			if(!i) {
-				//TODO: write [cache] to cache.ini
-			}
 			//TODO: write entry back to cache.ini
 			//Windows file format:
 			//cfile=gfile\r\n
+			write_cache( fp, file[i] );
 			break;
 		}
 	}
+	//TODO: mv cache.ini.new cache.ini
+	fclose(fp);
 	return 0;
 }
 
@@ -186,7 +219,6 @@ int main(int argc, char **argv)
 
 	int num_cache = 0;
 	c = read_cache(CACHE_FILE, &num_cache);
-
 	if( c != NULL ) {
 		int i;
 		for(i=0; i<num_cache; i++) {

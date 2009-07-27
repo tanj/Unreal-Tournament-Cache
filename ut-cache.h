@@ -31,6 +31,12 @@
 #define CACHE_FILE "test/ut99_cache.ini"
 
 /*
+ * Config related globals
+ */
+const char *cache_dir;
+const char *move_dir;
+
+/*
  * Basic struct for parsing the cache.ini into
  */
 struct ut_cache {
@@ -45,10 +51,11 @@ struct ut_cache {
 */
 /* read cache and figure out where each file should go */
 void *read_cache(const char *cachefile, int *size);
+int write_cache(FILE *fp, struct ut_cache *file);
 /* figure out where each file should go */
 int asign_dir(struct ut_cache *file);
 /* perform action */
-int cache_action(struct ut_cache *file);
+int cache_action(struct ut_cache **file, int num_entries);
 
 /* General helper functions */
 extern void usage(const char *err);

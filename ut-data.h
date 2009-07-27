@@ -11,10 +11,10 @@
 
 
 /* Diretories */
-#define MAPS "Maps/"
-#define MUSIC "Music/"
-#define SOUND "Sound/"
-#define SYSTEM "System/"
-#define TEXTURES "Textures/"
+#define MAPS "Maps"
+#define MUSIC "Music"
+#define SOUND "Sound"
+#define SYSTEM "System"
+#define TEXTURES "Textures"
 
 #endif
