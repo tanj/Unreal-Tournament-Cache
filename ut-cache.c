@@ -147,9 +147,29 @@ out_free:
 	return (ret == -1)? NULL: cache;
 }
 
-int cache_action(struct ut_cache *file)
+int cache_action(struct ut_cache **file, int num_entries)
 {
-/*TODO*/
+/*TODO: perform action and write new cache.ini */
+	int i=0;
+	for(i=0;i<num_entries;i++) {
+		switch(file[i]->action) {
+		case UT_MOVE:
+			//TODO: mv "file->cfile" "/GAME_PATH/file->gdir/file->gfile"
+			break;
+		case UT_DELETE:
+			//TODO: rm -f "file->cfile"
+			break;
+		case UT_NO_TASK:
+		default:
+			if(!i) {
+				//TODO: write [cache] to cache.ini
+			}
+			//TODO: write entry back to cache.ini
+			//Windows file format:
+			//cfile=gfile\r\n
+			break;
+		}
+	}
 	return 0;
 }
 
