@@ -9,6 +9,7 @@
 *.o
 *.a
 *.exe
+ut-cache
 
 # tags
 TAGS
