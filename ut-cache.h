@@ -46,7 +46,7 @@ struct ut_cache {
 	int action;      /* actions to take on the file */
 };
 
-/* 
+/*
  * cache handling functions
 */
 /* read cache and figure out where each file should go */

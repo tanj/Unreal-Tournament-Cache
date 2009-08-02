@@ -157,7 +157,7 @@ int write_cache( FILE *fp, struct ut_cache *file )
 	return 0;
 }
 
-	
+
 int cache_action(struct ut_cache **file, int num_entries)
 {
 /*TODO: perform action and write new cache.ini */
@@ -169,7 +169,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 		switch(file[i]->action) {
 		case UT_MOVE:
 			//TODO: mv "file->cfile" "/GAME_PATH/file->gdir/file->gfile"
-			sprintf( cmd, "mv \"%s/%s.uxx\" \"%s/%s/%s\"", 
+			sprintf( cmd, "mv \"%s/%s.uxx\" \"%s/%s/%s\"",
 				 cache_dir, (file[i]->cfile),move_dir,(file[i]->gdir), (file[i]->gfile));
 			if(system(cmd)) {
 				//TODO: do something intelligent
@@ -224,12 +224,12 @@ int main(int argc, char **argv)
 		for(i=0; i<num_cache; i++) {
 			fprintf(stderr, "cfile: %s\n", c[i]->cfile);
 			fprintf(stderr, "gfile: %s\n", c[i]->gfile);
-			fprintf(stderr, "gdir:  %s\n", c[i]->gdir);
+			fprintf(stderr, "gdir:	%s\n", c[i]->gdir);
 			fprintf(stderr, "\n");
 		}
 	}
 	printf( "%d\n", num_cache);
 	printf("done!\n");
 
-	return 0; 
+	return 0;
 }
