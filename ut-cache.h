@@ -28,7 +28,7 @@
 #define MAXLEN 1000
 
 /* Default strings */
-#define CACHE_FILE "test/ut99_cache.ini"
+#define CACHE_FILE "test/Cache/cache.ini"
 
 /*
  * Config related globals

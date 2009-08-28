@@ -161,7 +161,7 @@ int write_cache( FILE *fp, struct ut_cache *file )
 int cache_action(struct ut_cache **file, int num_entries)
 {
 /*TODO: perform action and write new cache.ini */
-	FILE *fp = fopen( "test/cache.ini.new", "w" );
+	FILE *fp = fopen( "test/Cache/cache.ini.new", "w" );
 	char cmd[1024]; //TODO: Get this information from system in ./configure
 	int i=0;
 
@@ -172,7 +172,6 @@ int cache_action(struct ut_cache **file, int num_entries)
 			sprintf( cmd, "mv \"%s/%s.uxx\" \"%s/%s/%s\"",
 				 cache_dir, (file[i]->cfile),move_dir,(file[i]->gdir), (file[i]->gfile));
 			if(system(cmd)) {
-				//TODO: do something intelligent
 				error("mv system call failed\n");
 				write_cache( fp, file[i] );
 				file[i]->action = UT_NO_TASK;
@@ -184,7 +183,6 @@ int cache_action(struct ut_cache **file, int num_entries)
 			//TODO: rm -f "file->cfile"
 			sprintf( cmd, "rm -f \"%s/%s.uxx\"", cache_dir, (file[i]->cfile));
 			if(system(cmd)) {
-				//TODO: do something intelligent
 				error("rm system call failed\n");
 				write_cache( fp, file[i] );
 				file[i]->action = UT_NO_TASK;
@@ -194,7 +192,6 @@ int cache_action(struct ut_cache **file, int num_entries)
 			break;
 		case UT_NO_TASK:
 		default:
-			//TODO: write entry back to cache.ini
 			//Windows file format:
 			//cfile=gfile\r\n
 			write_cache( fp, file[i] );
@@ -203,6 +200,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 	}
 	//TODO: mv cache.ini.new cache.ini
 	fclose(fp);
+	system( "mv test/Cache/cache.ini.new test/Cache/cache.ini" )
 	return 0;
 }
 
