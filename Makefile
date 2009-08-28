@@ -1,4 +1,4 @@
-CFLAGS=-g -O3 -Wall
+CFLAGS=-g -Wall
 CC=gcc
 
 PROG=ut-cache
@@ -15,4 +15,8 @@ ut-cache.o: ut-cache.h
 
 clean:
 	rm -f *.o $(PROG)
+	rm -rf test/Cache
 
+.PHONY: test
+test:
+	test/create_test_files.sh

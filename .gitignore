@@ -14,3 +14,5 @@ ut-cache
 # tags
 TAGS
 
+# generated test files
+test/Cache/*
