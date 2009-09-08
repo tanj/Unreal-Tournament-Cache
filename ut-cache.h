@@ -33,8 +33,8 @@
 /*
  * Config related globals
  */
-const char *cache_dir;
-const char *move_dir;
+const char *cache_dir="test/Cache";
+const char *move_dir="test/";
 
 /*
  * Basic struct for parsing the cache.ini into

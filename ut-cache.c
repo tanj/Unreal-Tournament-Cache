@@ -200,7 +200,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 	}
 	//TODO: mv cache.ini.new cache.ini
 	fclose(fp);
-	system( "mv test/Cache/cache.ini.new test/Cache/cache.ini" )
+	system( "mv test/Cache/cache.ini.new test/Cache/cache.ini" );
 	return 0;
 }
 
@@ -220,12 +220,19 @@ int main(int argc, char **argv)
 	if( c != NULL ) {
 		int i;
 		for(i=0; i<num_cache; i++) {
+			if( i % 2)
+				c[i]->action = UT_MOVE;
+			else
+				c[i]->action = UT_DELETE;
+
 			fprintf(stderr, "cfile: %s\n", c[i]->cfile);
 			fprintf(stderr, "gfile: %s\n", c[i]->gfile);
 			fprintf(stderr, "gdir:	%s\n", c[i]->gdir);
 			fprintf(stderr, "\n");
 		}
+		cache_action( c, num_cache );
 	}
+
 	printf( "%d\n", num_cache);
 	printf("done!\n");
 
