@@ -56,7 +56,8 @@ int write_cache(FILE *fp, struct ut_cache *file);
 int asign_dir(struct ut_cache *file);
 /* perform action */
 int cache_action(struct ut_cache **file, int num_entries);
-
+void do_all(struct ut_cache **file, int num_cache, int action);
+void do_interactive(struct ut_cache **file, int num_cache);
 /* General helper functions */
 extern void usage(const char *err);
 extern int error(const char *string);

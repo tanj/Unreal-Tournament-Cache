@@ -3,6 +3,8 @@
 
 #include "ut-cache.h"
 
+const char ut_cache_usage_string[] = 
+	"ut-cache [option]\n\n-a Move all files\n-d Remove all files\n";
 void usage(const char *err)
 {
 	fprintf(stderr, "ut-cache: %s\n", err);
@@ -204,37 +206,76 @@ int cache_action(struct ut_cache **file, int num_entries)
 	return 0;
 }
 
-int main(int argc, char **argv)
+int main(int argc, const char **argv)
 {
-	if( argc > 1 ) {
-		usage("ut-cache \n\n"
-		      "Unreal Tournament cache reader.\n"
-		      "Convert the *.uxx files into their real names move into configured\n"
-		      "directories.");
-	}
-
 	struct ut_cache **c = NULL;
 
 	int num_cache = 0;
 	c = read_cache(CACHE_FILE, &num_cache);
-	if( c != NULL ) {
-		int i;
-		for(i=0; i<num_cache; i++) {
-			if( i % 2)
-				c[i]->action = UT_MOVE;
-			else
-				c[i]->action = UT_DELETE;
-
-			fprintf(stderr, "cfile: %s\n", c[i]->cfile);
-			fprintf(stderr, "gfile: %s\n", c[i]->gfile);
-			fprintf(stderr, "gdir:	%s\n", c[i]->gdir);
-			fprintf(stderr, "\n");
-		}
-		cache_action( c, num_cache );
+	if( c == NULL ) {
+		return 1;
 	}
+
+	/* Handle args */
+	/* Skip program name */
+	argv++;
+	argc--;
+	if( argc == 0 )
+		do_interactive(c, num_cache);
+	while( argc > 0 ) {
+		if( !strcmp(*argv, "-a") )
+			if( 1 == argc )
+				do_all(c, num_cache, UT_MOVE);
+			else
+				usage(ut_cache_usage_string);
+		else if( !strcmp(*argv, "-d") )
+			if( 1 == argc )
+				do_all(c, num_cache, UT_DELETE);
+			else
+				usage(ut_cache_usage_string);
+		else
+			usage(ut_cache_usage_string);
+		argv++;
+		argc--;
+	}
+
 
 	printf( "%d\n", num_cache);
 	printf("done!\n");
 
 	return 0;
+}
+
+void do_all(struct ut_cache **file, int num_cache, int action)
+{
+	int i;
+	for(i=0; i<num_cache; i++) {
+		file[i]->action = action;
+	}
+	cache_action( file, num_cache );
+}
+
+void do_interactive(struct ut_cache **file, int num_cache)
+{
+	int i;
+	for(i=0; i<num_cache; i++) {
+		fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
+		fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
+		char c;
+		while( (c=getchar()) != EOF ) {
+			if( '\n' == c )
+				break;
+			else if( '1' == c ){
+				file[i]->action = UT_MOVE;
+			}else if('2' == c){
+				file[i]->action = UT_DELETE;
+			}else if('3' == c){
+				file[i]->action = UT_NO_TASK;
+			}else {
+				fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
+				fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
+			}
+		}
+	}
+	cache_action(file, num_cache);
 }
