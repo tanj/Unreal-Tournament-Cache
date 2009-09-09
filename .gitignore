@@ -16,3 +16,8 @@ TAGS
 
 # generated test files
 test/Cache/*
+test/Maps/*
+test/Music/*
+test/Sounds/*
+test/System/*
+test/Textures/*
