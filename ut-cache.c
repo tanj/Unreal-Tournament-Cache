@@ -162,8 +162,12 @@ int write_cache( FILE *fp, struct ut_cache *file )
 
 int cache_action(struct ut_cache **file, int num_entries)
 {
-/*TODO: perform action and write new cache.ini */
-	FILE *fp = fopen( "test/Cache/cache.ini.new", "w" );
+	char cache_file_new[MAXLEN];
+	memset(cache_file_new,0,MAXLEN);
+	strcat(cache_file_new, cache_dir);
+	strcat(cache_file_new, "/cache.ini.new");
+
+	FILE *fp = fopen( cache_file_new, "w" );
 	char cmd[1024]; //TODO: Get this information from system in ./configure
 	int i=0;
 
@@ -202,7 +206,8 @@ int cache_action(struct ut_cache **file, int num_entries)
 	}
 	//TODO: mv cache.ini.new cache.ini
 	fclose(fp);
-	system( "mv test/Cache/cache.ini.new test/Cache/cache.ini" );
+	sprintf( cmd, "mv \"%s\" \"%s\"", cache_file_new, /*TODO: cache_file*/ CACHE_FILE);
+	system( cmd );
 	return 0;
 }
 
