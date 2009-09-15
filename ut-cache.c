@@ -1,3 +1,8 @@
+/*
+ * Unreal Tournament Cache Converter
+ * Copyright (C) John te Bokkel, 2009
+ */
+
 /* ut-cache: Read the UT cache of downloaded files and move them to
    the proper directory */
 

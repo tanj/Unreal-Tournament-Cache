@@ -1,3 +1,8 @@
+/*
+ * Unreal Tournament Cache Converter
+ * Copyright (C) John te Bokkel, 2009
+ */
+
 #ifndef UT_DATA_H
 #define UT_DATA_H
 
