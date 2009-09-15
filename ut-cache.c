@@ -47,17 +47,55 @@ int asign_dir(struct ut_cache *file)
 
 	stolower(ext);
 
-	if( !strcmp(ext, UT_U )){
-		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
-	}else if( !strcmp(ext, UT_UAX) ){
-		memcpy(file->gdir, SOUND, sizeof(SOUND));
-	}else if( !strcmp(ext, UT_UMX) ){
-		memcpy(file->gdir, MUSIC, sizeof(MUSIC));
-	}else if( !strcmp(ext, UT_UNR) ){
+	/* Match extentions to game directory */
+
+	/* Animations */
+	if(!strcmp( ext, UT_UKX ) )
+		memcpy(file->gdir, ANIMATIONS, sizeof(ANIMATIONS));
+	/* Force Feedback */
+	else if( !strcmp(ext, UT_IFR) )
+		memcpy(file->gdir, FORCE_FEEDBACK, sizeof(FORCE_FEEDBACK));
+	/* Karma Data */
+	else if( !strcmp(ext, UT_KA) )
+		memcpy(file->gdir, KARMA_DATA, sizeof(KARMA_DATA));
+	/* Maps */
+	else if( !strcmp(ext, UT_UNR) )
 		memcpy(file->gdir, MAPS, sizeof(MAPS));
-	}else if( !strcmp(ext, UT_UTX) ){
+	else if( !strcmp(ext, UT_UT2) )
+		memcpy(file->gdir, MAPS, sizeof(MAPS));
+	/* Music */
+	else if( !strcmp(ext, UT_UMX) )
+		memcpy(file->gdir, MUSIC, sizeof(MUSIC));
+	else if( !strcmp(ext, UT_OGG) )
+		memcpy(file->gdir, MUSIC, sizeof(MUSIC));
+	/* Saves */
+	else if( !strcmp(ext, UT_UVX) )
+		memcpy(file->gdir, SAVES, sizeof(SAVES));
+	/* Sounds */
+	else if( !strcmp(ext, UT_UAX) )
+		memcpy(file->gdir, SOUND, sizeof(SOUND));
+	/* Speech */
+	else if( !strcmp(ext, UT_XML) )
+		memcpy(file->gdir, SPEECH, sizeof(SPEECH));
+	/* Static Meshes */
+	else if( !strcmp(ext, UT_USX) )
+		memcpy(file->gdir, STATIC_MESHES, sizeof(STATIC_MESHES));
+	/* System */
+	else if( !strcmp(ext, UT_U ))
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	else if( !strcmp(ext, UT_UCL) )
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	else if( !strcmp(ext, UT_INI) )
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	else if( !strcmp(ext, UT_INT) )
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	else if( !strcmp(ext, UT_UPL) )
+		memcpy(file->gdir, SYSTEM, sizeof(SYSTEM));
+	/* Textures */
+	else if( !strcmp(ext, UT_UTX) )
 		memcpy(file->gdir, TEXTURES, sizeof(TEXTURES));
-	}
+	else
+		memset(file->gdir, 0, sizeof(file->gdir));
 
 	return 0;
 }
