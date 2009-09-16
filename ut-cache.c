@@ -254,6 +254,41 @@ int cache_action(struct ut_cache **file, int num_entries)
 	return 0;
 }
 
+
+void do_all(struct ut_cache **file, int num_cache, int action)
+{
+	int i;
+	for(i=0; i<num_cache; i++) {
+		file[i]->action = action;
+	}
+	cache_action( file, num_cache );
+}
+
+void do_interactive(struct ut_cache **file, int num_cache)
+{
+	int i;
+	for(i=0; i<num_cache; i++) {
+		fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
+		fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
+		char c;
+		while( (c=getchar()) != EOF ) {
+			if( '\n' == c )
+				break;
+			else if( '1' == c ){
+				file[i]->action = UT_MOVE;
+			}else if('2' == c){
+				file[i]->action = UT_DELETE;
+			}else if('3' == c){
+				file[i]->action = UT_NO_TASK;
+			}else {
+				fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
+				fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
+			}
+		}
+	}
+	cache_action(file, num_cache);
+}
+
 int main(int argc, const char **argv)
 {
 	struct ut_cache **c = NULL;
@@ -292,38 +327,4 @@ int main(int argc, const char **argv)
 	printf("done!\n");
 
 	return 0;
-}
-
-void do_all(struct ut_cache **file, int num_cache, int action)
-{
-	int i;
-	for(i=0; i<num_cache; i++) {
-		file[i]->action = action;
-	}
-	cache_action( file, num_cache );
-}
-
-void do_interactive(struct ut_cache **file, int num_cache)
-{
-	int i;
-	for(i=0; i<num_cache; i++) {
-		fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
-		fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
-		char c;
-		while( (c=getchar()) != EOF ) {
-			if( '\n' == c )
-				break;
-			else if( '1' == c ){
-				file[i]->action = UT_MOVE;
-			}else if('2' == c){
-				file[i]->action = UT_DELETE;
-			}else if('3' == c){
-				file[i]->action = UT_NO_TASK;
-			}else {
-				fprintf(stdout, "%s/%s\n", file[i]->gdir, file[i]->gfile);
-				fprintf(stdout, "1) Move\n2) Delete\n3) Keep\nEnter choice:");
-			}
-		}
-	}
-	cache_action(file, num_cache);
 }
