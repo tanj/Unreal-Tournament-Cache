@@ -289,42 +289,83 @@ void do_interactive(struct ut_cache **file, int num_cache)
 	cache_action(file, num_cache);
 }
 
-int main(int argc, const char **argv)
+static struct option const long_options[] =
 {
-	struct ut_cache **c = NULL;
+	{"base", required_argument, NULL, 'b'},
+	{"config", required_argument, NULL, 'c'},
+	{"delete-all", no_argument, NULL, 'd'},
+	{"help", no_argument, NULL, 'h'},
+	{"interactive", no_argument, NULL, 'i'},
+	{"move-all", no_argument, NULL, 'a'},
+	{"ut2003", no_argument, NULL, UT2003},
+	{"ut2004", no_argument, NULL, UT2004},
+	{"ut99", no_argument, NULL, UT99},
+	{"verbose", no_argument, NULL, 'v'},
+	{0, 0, 0, 0}
+};
 
+int main(int argc, char **argv)
+{
+	struct ut_cache **cache = NULL;
 	int num_cache = 0;
-	c = read_cache(CACHE_FILE, &num_cache);
-	if( c == NULL ) {
+	int c = 0;
+	int action = 0;
+	int interactive = false;
+	int game_type = 0;
+
+	/* Handle args */
+	while( (c = getopt_long(argc, argv, "adhivb:c:", long_options, NULL)) != -1 ) {
+		switch (c) {
+		case 'a':
+			if(!action)
+				action = UT_MOVE;
+			else
+				usage("can't move and delete all.");
+			break;
+		case 'b':
+			move_dir = optarg;
+			break;
+		case 'c':
+			cache_dir = optarg;
+			break;
+		case 'd':
+			if(!action)
+				action = UT_DELETE;
+			else
+				usage("can't move and delete all.");
+			break;
+		case 'i':
+			interactive = true;
+			break;
+		case 'v':
+			break;
+		case UT99:
+			if(!game_type)
+				game_type = UT99;
+			else
+				usage("only one game type at a time");
+			break;
+		case UT2003:
+			if(!game_type)
+				game_type = UT2003;
+			else
+				usage("only one game type at a time");
+			break;
+		case UT2004:
+			if(!game_type)
+				game_type = UT2004;
+			else
+				usage("only one game type at a time");
+			break;
+		default:
+			usage(ut_cache_usage_string);
+		}
+	}
+	cache = read_cache(CACHE_FILE, &num_cache);
+	if( cache == NULL ) {
 		return 1;
 	}
 
-	/* Handle args */
-	/* Skip program name */
-	argv++;
-	argc--;
-	if( argc == 0 )
-		do_interactive(c, num_cache);
-	while( argc > 0 ) {
-		if( !strcmp(*argv, "-a") )
-			if( 1 == argc )
-				do_all(c, num_cache, UT_MOVE);
-			else
-				usage(ut_cache_usage_string);
-		else if( !strcmp(*argv, "-d") )
-			if( 1 == argc )
-				do_all(c, num_cache, UT_DELETE);
-			else
-				usage(ut_cache_usage_string);
-		else
-			usage(ut_cache_usage_string);
-		argv++;
-		argc--;
-	}
-
-
-	printf( "%d\n", num_cache);
-	printf("done!\n");
 
 	return 0;
 }

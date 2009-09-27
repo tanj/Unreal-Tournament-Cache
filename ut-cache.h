@@ -10,6 +10,8 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <getopt.h>
+#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdarg.h>
@@ -38,8 +40,8 @@
 /*
  * Config related globals
  */
-const char *cache_dir="test/Cache";
-const char *move_dir="test/";
+const char *cache_dir;
+const char *move_dir;
 
 /*
  * Basic struct for parsing the cache.ini into
