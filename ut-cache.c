@@ -247,7 +247,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 	}
 	//TODO: mv cache.ini.new cache.ini
 	fclose(fp);
-	sprintf( cmd, "mv \"%s\" \"%s\"", cache_file_new, /*TODO: cache_file*/ CACHE_FILE);
+	sprintf( cmd, "mv \"%s\" \"%s%s\"", cache_file_new, cache_dir, "/cache.ini");
 	system( cmd );
 	return 0;
 }
@@ -311,6 +311,22 @@ int main(int argc, char **argv)
 	int interactive = false;
 	int game_type = 0;
 
+	char *home_dir;
+	home_dir = getenv("HOME");
+
+	char cache_file[MAXLEN];
+	memset( cache_file, 0, sizeof(cache_file));
+	char tmp_cache[MAXLEN];
+	memset( tmp_cache, 0, sizeof(tmp_cache));
+	char tmp_config[MAXLEN];
+	memset( tmp_config, 0, sizeof(tmp_config));
+	char tmp_move[MAXLEN];
+	memset( tmp_move, 0, sizeof(tmp_move));
+
+	cache_dir = NULL;
+	move_dir = NULL;
+	config_dir = NULL;
+
 	/* Handle args */
 	while( (c = getopt_long(argc, argv, "adhivb:c:", long_options, NULL)) != -1 ) {
 		switch (c) {
@@ -324,7 +340,7 @@ int main(int argc, char **argv)
 			move_dir = optarg;
 			break;
 		case 'c':
-			cache_dir = optarg;
+			config_dir = optarg;
 			break;
 		case 'd':
 			if(!action)
@@ -355,11 +371,51 @@ int main(int argc, char **argv)
 			else
 				usage("only one game type at a time");
 			break;
+		case 'h':
 		default:
 			usage(ut_cache_usage_string);
 		}
 	}
-	cache = read_cache(CACHE_FILE, &num_cache);
+
+	if( config_dir == NULL ) {
+		switch(game_type) {
+		case UT99:
+			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
+			strcat( tmp_config, "/.loki/ut");
+			config_dir = tmp_config;
+			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
+			break;
+		case UT2003:
+			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
+			strcat( tmp_config, "/.ut2003");
+			config_dir = tmp_config;
+			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
+			break;
+		case UT2004:
+			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
+			strcat( tmp_config, "/.ut2004");
+			config_dir = tmp_config;
+			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
+			break;
+		default:
+			usage(ut_cache_usage_string);
+			break;
+		}
+	}else {
+		memcpy( tmp_cache, config_dir, strlen(config_dir) * sizeof(char));
+		strcat( tmp_cache, "/Cache" );
+		cache_dir = tmp_cache;
+	}
+
+
+	if( move_dir == NULL ) {
+		move_dir = config_dir;
+		fprintf(stderr, "no move directory specified. using \"%s\"\n", move_dir);
+	}
+
+	memcpy( cache_file, cache_dir, strlen(cache_dir) * sizeof(char));
+	strcat( cache_file, "/cache.ini" );
+	cache = read_cache( cache_file, &num_cache);
 	if( cache == NULL ) {
 		return 1;
 	}

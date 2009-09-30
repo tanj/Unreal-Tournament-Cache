@@ -52,6 +52,7 @@ const char ut_cache_usage_string[] =
  * Config related globals
  */
 const char *cache_dir;
+const char *config_dir;
 const char *move_dir;
 
 /*
