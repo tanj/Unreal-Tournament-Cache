@@ -383,29 +383,28 @@ int main(int argc, char **argv)
 			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
 			strcat( tmp_config, "/.loki/ut");
 			config_dir = tmp_config;
-			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
 			break;
 		case UT2003:
 			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
 			strcat( tmp_config, "/.ut2003");
 			config_dir = tmp_config;
-			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
 			break;
 		case UT2004:
 			memcpy( tmp_config, home_dir, strlen(home_dir) * sizeof(char) );
 			strcat( tmp_config, "/.ut2004");
 			config_dir = tmp_config;
-			fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
 			break;
 		default:
 			usage(ut_cache_usage_string);
 			break;
 		}
-	}else {
-		memcpy( tmp_cache, config_dir, strlen(config_dir) * sizeof(char));
-		strcat( tmp_cache, "/Cache" );
-		cache_dir = tmp_cache;
 	}
+	memcpy( tmp_cache, config_dir, strlen(config_dir) * sizeof(char));
+	strcat( tmp_cache, "/Cache" );
+	cache_dir = tmp_cache;
+	fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
+
+	
 
 
 	if( move_dir == NULL ) {
