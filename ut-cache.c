@@ -8,8 +8,6 @@
 
 #include "ut-cache.h"
 
-const char ut_cache_usage_string[] = 
-	"ut-cache [option]\n\n-a Move all files\n-d Remove all files\n";
 void usage(const char *err)
 {
 	fprintf(stderr, "ut-cache: %s\n", err);
