@@ -352,6 +352,7 @@ int main(int argc, char **argv)
 			interactive = true;
 			break;
 		case 'v':
+			//TODO: verbose echos move or delete action
 			break;
 		case UT99:
 			if(!game_type)

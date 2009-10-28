@@ -39,12 +39,16 @@ clean:
 
 
 
-.PHONY: test
-test:
+.PHONY: test-setup
+test-setup:
 	test/create_test_files.sh
 	$(MKDIR) $(UT_DIRS)
 
-.PHONY: clean-test
-clean-test:
+.PHONY: test-clean
+test-clean:
 	$(RM_DIR) test/Cache
 	$(RM_DIR) $(UT_DIRS)
+
+.PHONY: test-run
+test-run:
+	./ut-cache -c "test/" -i
