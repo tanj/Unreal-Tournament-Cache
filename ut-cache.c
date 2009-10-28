@@ -215,7 +215,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 	for(i=0;i<num_entries;i++) {
 		switch(file[i]->action) {
 		case UT_MOVE:
-			//TODO: mv "file->cfile" "/GAME_PATH/file->gdir/file->gfile"
+			//mv "file->cfile" "/GAME_PATH/file->gdir/file->gfile"
 			sprintf( cmd, "mv \"%s/%s.uxx\" \"%s/%s/%s\"",
 				 cache_dir, (file[i]->cfile),move_dir,(file[i]->gdir), (file[i]->gfile));
 			if(system(cmd)) {
@@ -227,7 +227,7 @@ int cache_action(struct ut_cache **file, int num_entries)
 			}
 			break;
 		case UT_DELETE:
-			//TODO: rm -f "file->cfile"
+			//rm -f "file->cfile"
 			sprintf( cmd, "rm -f \"%s/%s.uxx\"", cache_dir, (file[i]->cfile));
 			if(system(cmd)) {
 				error("rm system call failed\n");
@@ -307,7 +307,7 @@ int main(int argc, char **argv)
 	struct ut_cache **cache = NULL;
 	int num_cache = 0;
 	int c = 0;
-	int action = 0;
+	int action = UT_NO_TASK;
 	int interactive = false;
 	int game_type = 0;
 
