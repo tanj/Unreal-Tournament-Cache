@@ -419,6 +419,11 @@ int main(int argc, char **argv)
 		return 1;
 	}
 
+	if( interactive ) {
+		do_interactive( cache, num_cache );
+	}else{
+		do_all( cache, num_cache, action );
+	}
 
 	return 0;
 }
