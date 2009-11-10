@@ -35,13 +35,14 @@
 #define MAXLEN 1000
 
 /* Default strings */
-const char ut_cache_usage_string[] = 
+const char ut_cache_usage_string[] =
 	"ut-cache [option]\n\n\
 --base -b Base directory to move the files into their sub directories\n\
 --config -c Config directory\n\
 --delete-all -d Remove all files\n\
 --help -h Display this help\n\
---interactive -i Interactive choice to keep, move, or delete the file from the cache\n\
+--interactive -i Interactive choice to keep, move, or delete the file\n\
+from the cache\n\
 --move-all -a Move all files\n\
 --ut2003 Use default config directory for UT 2003\n\
 --ut2004 Use default config directory for UT 2004\n\

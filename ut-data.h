@@ -8,7 +8,7 @@
 
 
 /* Diretories followed by the extentions that belong in them */
-#define ANIMATIONS "Animations" 
+#define ANIMATIONS "Animations"
 #define UT_UKX "ukx"
 
 #define FORCE_FEEDBACK "ForceFeedback"

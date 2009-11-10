@@ -405,9 +405,6 @@ int main(int argc, char **argv)
 	cache_dir = tmp_cache;
 	fprintf(stderr, "using \"%s\" for cache directory\n", cache_dir);
 
-	
-
-
 	if( move_dir == NULL ) {
 		move_dir = config_dir;
 		fprintf(stderr, "no move directory specified. using \"%s\"\n", move_dir);
