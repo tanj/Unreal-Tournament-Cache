@@ -83,5 +83,6 @@ extern void usage(const char *err);
 extern int error(const char *string);
 extern void chomp(char *line);
 extern void stolower(char *string);
+extern int line_count(FILE *fp);
 
 #endif /* UT_CACHE_H */

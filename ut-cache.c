@@ -39,6 +39,33 @@ void stolower(char *string)
 		string[i] = tolower(string[i]);
 }
 
+int line_count(FILE *fp)
+{
+	int num_lines = 0;
+	int newlines = 0;
+	int carriage_returns = 0;
+	int c = 0;
+	while( (c=getc(fp)) != EOF) {
+		if( '\n' == c )
+			++newlines;
+		if( '\r' == c )
+			++carriage_returns;
+	}
+	rewind(fp);
+
+	if( newlines > carriage_returns && newlines != 0 ) {
+		num_lines = newlines;
+	}else if( carriage_returns > newlines && carriage_returns != 0) {
+		num_lines = carriage_returns;
+		error("More '\\r' then '\\n'\nPlease convert the cache file to windows or unix style line endings and try again");
+		exit(1);
+	}else {
+		num_lines = newlines;
+	}
+
+	return num_lines;
+}
+
 int asign_dir(struct ut_cache *file)
 {
 	char ext[5]; /* allow for 4 char extentions */
@@ -137,14 +164,7 @@ void *read_cache(const char *cachefile, int *size)
 		ret = error("unable to create FILE *\n");
 		goto out_free;
 	}
-	/* get number of lines in  the cache file */
-	int num_lines = 0;
-	int c = 0;
-	while( (c=getc(fp)) != EOF) {
-		if( '\n' == c )
-			++num_lines;
-	}
-	rewind(fp);
+	int num_lines = line_count( fp );
 	/* allocate struct for each line in the file */
 	buf_size = num_lines;
 	if( cache == NULL ) {

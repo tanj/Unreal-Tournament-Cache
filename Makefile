@@ -52,3 +52,7 @@ test-clean:
 .PHONY: test-run
 test-run:
 	./ut-cache -c "test/" -i
+
+.PHONY: tags
+tags:
+	ctags -e -R

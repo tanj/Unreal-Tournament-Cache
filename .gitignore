@@ -13,6 +13,10 @@ ut-cache
 
 # tags
 TAGS
+GTAGS
+GPATH
+GRTAGS
+GSYMS
 
 # generated test files
 test/Cache/*
