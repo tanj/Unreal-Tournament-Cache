@@ -53,12 +53,12 @@ int line_count(FILE *fp)
 	}
 	rewind(fp);
 
+	delim = '\n';
 	if( newlines > carriage_returns && newlines != 0 ) {
 		num_lines = newlines;
 	}else if( carriage_returns > newlines && carriage_returns != 0) {
 		num_lines = carriage_returns;
-		error("More '\\r' then '\\n'\nPlease convert the cache file to windows or unix style line endings and try again");
-		exit(1);
+		delim = '\r';
 	}else {
 		num_lines = newlines;
 	}
@@ -137,7 +137,15 @@ void *read_cache(const char *cachefile, int *size)
 	int ret=0;
 	FILE *fp=NULL;
 
-	char line[MAXLEN];
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t read = 0;
+
+	len = MAXLEN * sizeof(char);
+	line = malloc( len );
+	if(!line)
+		goto out_free;
+
 	struct ut_cache **cache=NULL;
 
 	int buf_size = 0;
@@ -183,7 +191,7 @@ void *read_cache(const char *cachefile, int *size)
 		error("got non NULL cache pointer\n");
 
 	char *equals;
-	for( i = 0; (fgets(line, MAXLEN, fp)) != NULL; i++ ){
+	for( i = 0; ( read = getdelim(&line, &len, delim, fp)) != -1; i++ ){
 		if( NULL == (equals = strchr( line, '=' ))){
 			i--;
 			continue;
@@ -196,6 +204,9 @@ void *read_cache(const char *cachefile, int *size)
 	*size = i;
 
 out_free:
+	if( line )
+		free(line);
+
 	if(fp != NULL)
 		fclose(fp);
 	else
@@ -212,10 +223,17 @@ out_free:
 
 int write_cache( FILE *fp, struct ut_cache *file )
 {
-	if(!ftell(fp))
-		fprintf( fp, "[Cache]\r\n" );
 
-	fprintf( fp, "%s=%s\r\n", (file->cfile), (file->gfile));
+	char line_ending[] = "\r\n"; /* Default is windows style */
+
+	/* old Mac style */
+	if( delim == '\r' )
+		line_ending[1] = '\0';
+
+	if(!ftell(fp))
+		fprintf( fp, "[Cache]%s", line_ending );
+
+	fprintf( fp, "%s=%s%s", (file->cfile), (file->gfile), line_ending);
 
 	return 0;
 }

@@ -56,6 +56,8 @@ const char *cache_dir;
 const char *config_dir;
 const char *move_dir;
 
+int delim = '\n';
+
 /*
  * Basic struct for parsing the cache.ini into
  */
